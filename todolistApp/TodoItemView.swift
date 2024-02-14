@@ -9,28 +9,27 @@ import Foundation
 
 import SwiftUI
 
-
-
 struct TodoItemView: View {
-    @Binding var todo: TodoItem
+    @Binding var todo: TodoItem  // Use a binding to allow modifications
 
     var body: some View {
-        VStack {
-            TextField("Edit todo title", text: $todo.title)
-                .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+        Form {
+            Section(header: Text("Details")) {
+                TextField("Title", text: $todo.title)
+                Toggle(isOn: $todo.isToggled) {
+                    Text("Completed")
+                }
+            }
             
-            Toggle("Completed", isOn: $todo.isToggled)
-                .padding()
-            TextField("Description", text: $todo.description)  // TextField for editing the description
-                            .frame(height: 200)
+            Section(header: Text("Description")) {
+                TextEditor(text: $todo.description)
+                    .frame(height: 200)  // Set a fixed height for the TextEditor
+            }
         }
-        .navigationTitle("Todo Details")
+        .navigationTitle(todo.title)  // Use the todo item's title as the navigation title
+        .navigationBarTitleDisplayMode(.inline)  // Display the title inline with the navigation bar
     }
 }
-
-
-
 
 
 struct TodoItemView_Previews: PreviewProvider {

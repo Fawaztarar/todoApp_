@@ -45,12 +45,11 @@ struct TodoListView: View {
                     
                     // Existing ToDos
                     ForEach($todos) { $todo in
-                        NavigationLink(destination: Text("Detail view for \($todo.title.wrappedValue)")) {
+                        NavigationLink(destination: TodoItemView(todo: .constant(todo))) {
                             HStack {
                                 Text(todo.title)
-                                    .onTapGesture {
-                                        print("Todo item tapped: \(todo.title)")
-                                    }
+                            
+                                    
                                 Spacer()
                                 Toggle("", isOn: $todo.isToggled)
                                     .labelsHidden() // Hide the Toggle labe
