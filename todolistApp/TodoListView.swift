@@ -23,63 +23,65 @@ struct TodoListView: View {
         TodoItem(title: "Workout", description: "Attend the gym session at 7 PM."),
     ]
     @State private var newTodoTitle = ""  // State to hold the title of the new ToDo
-
+    
     var body: some View {
-        VStack {
-            List {
-                // TextField to enter a new ToDo title
-                HStack {
-                    TextField("Enter new todo", text: $newTodoTitle)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    Button(action: {
-                        guard !newTodoTitle.isEmpty else { return }
-                        let newTodo = TodoItem(title: newTodoTitle)
-                        todos.append(newTodo)  // Add the new ToDo to the list
-                        newTodoTitle = ""  // Reset the TextField
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.green)
+        NavigationView {
+            VStack {
+                List {
+                    // TextField to enter a new ToDo title
+                    HStack {
+                        TextField("Enter new todo", text: $newTodoTitle)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        Button(action: {
+                            guard !newTodoTitle.isEmpty else { return }
+                            let newTodo = TodoItem(title: newTodoTitle)
+                            todos.append(newTodo)  // Add the new ToDo to the list
+                            newTodoTitle = ""  // Reset the TextField
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.green)
+                        }
                     }
-                }
-
-                // Existing ToDos
-                ForEach($todos) { $todo in
-                    NavigationLink(destination: Text("Detail view for \($todo.title.wrappedValue)")) {
-                        HStack {
-                            Text(todo.title)
-                                .onTapGesture {
+                    
+                    // Existing ToDos
+                    ForEach($todos) { $todo in
+                        NavigationLink(destination: Text("Detail view for \($todo.title.wrappedValue)")) {
+                            HStack {
+                                Text(todo.title)
+                                    .onTapGesture {
                                         print("Todo item tapped: \(todo.title)")
                                     }
-                            Spacer()
-                            Toggle("", isOn: $todo.isToggled)
-                                                                .labelsHidden() // Hide the Toggle labe
+                                Spacer()
+                                Toggle("", isOn: $todo.isToggled)
+                                    .labelsHidden() // Hide the Toggle labe
+                            }
                         }
                     }
                 }
-            }
-            .listStyle(PlainListStyle())
-
-            // Button to toggle all ToDos
-            Button("Toggle All") {
-                withAnimation {
-                    for index in todos.indices {
-                        todos[index].isToggled.toggle()
+                .listStyle(PlainListStyle())
+                
+                // Button to toggle all ToDos
+                Button("Toggle All") {
+                    withAnimation {
+                        for index in todos.indices {
+                            todos[index].isToggled.toggle()
+                        }
                     }
                 }
+                .padding()
             }
-            .padding()
-        }
-        .navigationTitle("Todos")
-    }
-}
-
-
-
-struct TodoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            TodoListView()
+            .navigationTitle("Todo's")
         }
     }
+    
+    
+    
+    struct TodoListView_Previews: PreviewProvider {
+        static var previews: some View {
+            NavigationView {
+                TodoListView()
+            }
+        }
+    }
+    
 }
-
