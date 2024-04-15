@@ -22,7 +22,7 @@ class TodoViewModel: ObservableObject {
     }
 
     func addTask(title: String, description: String) {
-        let newTodo = TodoItem(title: title, description: description)
+        let newTodo = TodoItem(title: title, description: description, isCompleted: false)
         todos.append(newTodo)
         saveTasks()
     }

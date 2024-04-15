@@ -14,8 +14,8 @@ struct AddNewTaskView: View {
     @ObservedObject var viewModel: TodoViewModel
     @Environment(\.presentationMode) var presentationMode
     var onAddTask: (() -> Void)? // Optional closure to execute after a task is added
-    @State private var taskTitle: String = ""
-    @State private var taskDescription: String = ""
+    @State var taskTitle: String = ""
+    @State var taskDescription: String = ""
 
     var body: some View {
         NavigationView {
@@ -30,9 +30,8 @@ struct AddNewTaskView: View {
                     .padding()
 
                 Button("Save") {
-                    let newTask = TodoItem(title: taskTitle, description: taskDescription, isCompleted: false)
-                    viewModel.todos.append(newTask)
-                    onAddTask?()  // If there's an action defined, execute it
+                    viewModel.addTask(title: taskTitle, description: taskDescription)
+                    onAddTask?()
                     presentationMode.wrappedValue.dismiss()
                 }
                 .buttonStyle(FilledButtonStyle())
